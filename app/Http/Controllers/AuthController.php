@@ -186,6 +186,34 @@ public function recintosElectoralesPC(){
   return response()->json(['data' => $recintos], 200);
 
 }
+public function update(Request $request, $id)
+{
+    // Buscar el recinto electoral por su ID
+    $recinto = RecintoElectoral::find($id);
+
+    // Verificar si el recinto existe
+    if (!$recinto) {
+        return response()->json(['message' => 'Recinto Electoral no encontrado'], 404);
+    }
+
+    // Validar los datos enviados en la solicitud
+    $request->validate([
+        'recinto' => 'required|string|max:255',
+        'estado' => 'required|boolean',
+        'parroquia_id' => 'required|exists:parroquias,id'
+    ]);
+
+    // Actualizar los campos del recinto con los datos enviados
+    $recinto->recinto = $request->input('recinto');
+    $recinto->estado = $request->input('estado');
+    $recinto->parroquia_id = $request->input('parroquia_id');
+
+    // Guardar los cambios en la base de datos
+    $recinto->save();
+
+    // Devolver una respuesta de éxito
+    return response()->json(['message' => 'Recinto Electoral actualizado correctamente'], 200);
+}
 
 }
 
