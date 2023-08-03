@@ -21,7 +21,7 @@ Route::group(['middleware' => ["auth:sanctum"]], function () {
     Route::get('/auth/recintosE', [AuthController::class, 'recintosElectoralesPC
     ']);
     Route::put('auth/update', [AuthController::class, 'update']);
-    Route::delete('auth/delete', [AuthController::class, 'DeletePorCanton']);
+    Route::delete('auth/delete/{cantonId}', [AuthController::class, 'DeletePorCanton']);
 
 });
 
