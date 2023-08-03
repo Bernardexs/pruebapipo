@@ -173,4 +173,19 @@ class AuthController extends Controller
    
 
 }
+public function recintosElectoralesPC(){
+      // Realizar la consulta utilizando Eloquent ORM para obtener los recintos electorales por provincia y cantón
+      $recintos = DB::table('recintoselectorales')
+      ->join('parroquias', 'parroquias.id', '=', 'recintoselectorales.parroquia_id')
+      ->join('cantones', 'cantones.id', '=', 'parroquias.canton_id')
+      ->join('provincias', 'provincias.id', '=', 'cantones.provincia_id')
+      ->select('recintoselectorales.recinto', 'parroquias.parroquia', 'cantones.canton', 'provincias.provincia')
+      ->get();
+
+  // Devolver la respuesta en formato JSON con los recintos electorales por provincia y cantón
+  return response()->json(['data' => $recintos], 200);
+
 }
+
+}
+
