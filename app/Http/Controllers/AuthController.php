@@ -214,6 +214,26 @@ public function update(Request $request, $id)
     // Devolver una respuesta de éxito
     return response()->json(['message' => 'Recinto Electoral actualizado correctamente'], 200);
 }
+public function DeletePorCanton(Request $request, $cantonId)
+{
+    // Buscar el cantón por su ID
+    $canton = Canton::find($cantonId);
 
+    // Verificar si el cantón existe
+    if (!$canton) {
+        return response()->json(['message' => 'Cantón no encontrado'], 404);
+    }
+
+    // Obtener las parroquias asociadas al cantón
+    $parroquias = $canton->parroquias;
+
+    // Eliminar cada parroquia asociada al cantón
+    foreach ($parroquias as $parroquia) {
+        $parroquia->delete();
+    }
+
+    // Devolver una respuesta de éxito
+    return response()->json(['message' => 'Parroquias eliminadas correctamente'], 200);
+}
 }
 
